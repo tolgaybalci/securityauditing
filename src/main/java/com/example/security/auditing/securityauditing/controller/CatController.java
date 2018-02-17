@@ -1,11 +1,13 @@
 package com.example.security.auditing.securityauditing.controller;
 
 import com.example.security.auditing.securityauditing.domain.Cat;
+import com.example.security.auditing.securityauditing.domain.validation.validator.CatValidator;
 import com.example.security.auditing.securityauditing.repository.CatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +18,11 @@ public class CatController {
 
     @Autowired
     private CatRepository catRepository;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.setValidator(new CatValidator());
+    }
 
     @GetMapping("")
     public String getCatsList(Model model){
