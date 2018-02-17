@@ -20,20 +20,20 @@ public class CatController {
     @GetMapping("")
     public String getCatsList(Model model){
         model.addAttribute("cats", catRepository.findAll());
-        return "cats/catList";
+        return "cat/catList";
     }
 
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'CUSTOMER')")
     @GetMapping("/new")
     public String getNewCat(Model model){
         model.addAttribute("cat", new Cat());
-        return "cats/createCat";
+        return "cat/createCat";
     }
 
     @PostMapping("/new")
     public String postNewCat(@ModelAttribute @Valid Cat cat, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "cats/createCat";
+            return "cat/createCat";
         }
         catRepository.save(cat);
         return "redirect:/cats";
@@ -42,22 +42,22 @@ public class CatController {
     @GetMapping("/{id}")
     public String showCatList(@PathVariable Long id, Model model){
         model.addAttribute("cat", catRepository.findById(id).get());
-        return "cats/showCat";
+        return "cat/showCat";
     }
 
     @GetMapping("/{id}/update")
     public String getUpdateCat(@PathVariable Long id, Model model){
         model.addAttribute("cat", catRepository.findById(id).get());
-        return "cats/updateCat";
+        return "cat/updateCat";
     }
 
     @PostMapping("/{id}/update")
     public String postUpdateCat(@ModelAttribute Cat cat){
         catRepository.save(cat);
-        return "redirect:/cat";
+        return "redirect:/cats";
     }
 
-    @PostMapping("{/id}/delete")
+    @PostMapping("/{id}/delete")
     public String postCatDelete(@PathVariable Long id){
 
         Cat cat = catRepository.findById(id).get();

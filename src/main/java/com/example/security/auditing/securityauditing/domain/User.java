@@ -22,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +37,14 @@ public class User implements UserDetails{
 
     private Role role = Role.USER;
 
+    private boolean isExpired = false;
+
+    private boolean isLocked = false;
+
+    private boolean isCredentialsExpired = false;
+
+    private boolean isEnabled = true;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -46,21 +54,21 @@ public class User implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !isExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return !isCredentialsExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }

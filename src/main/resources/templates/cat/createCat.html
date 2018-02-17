@@ -8,24 +8,13 @@
     <form method="post" th:action="@{/cats/new}" th:object="${cat}">
 
         <div class="form-group">
-            <label for="id">Id</label>
-            <input class="form-control" type="text" id="id" th:field="*{id}"/>
-        </div>
-
-        <div class="form-group">
             <label for="name">Name</label>
             <input class="form-control" type="text" id="name" th:field="*{name}"/>
+            <button type="submit">Create</button>
         </div>
 
-        <div class="form-group">
-            <label for="createdBy">Created By</label>
-            <input class="form-control" type="text" id="createdBy" th:field="*{createdBy}"/>
-        </div>
-
-        <div class="form-group">
-            <label for="creationDate">Creation Date</label>
-            <input class="form-control" type="date" id="creationDate" th:field="*{creationDate}"/>
-        </div>
+    </form>
 </div>
 </body>
+</th:block>
 </html>

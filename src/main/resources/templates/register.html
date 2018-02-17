@@ -40,6 +40,11 @@
             <input th:field="*{password}" class="form-control" type="password" id="password" name="password"/>
           </div>
 
+          <div class="form-group">
+            <label for="matchingPassword">Password (Again)</label>
+            <input th:field="*{matchingPassword}" class="form-control" type="password" id="matchingPassword" name="matchingPassword"/>
+          </div>
+
           <button class="btn btn-primary" type="submit">Register</button>
         </form>
       </div>

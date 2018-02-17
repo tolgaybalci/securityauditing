@@ -1,6 +1,6 @@
 package com.example.security.auditing.securityauditing.controller;
 
-import com.example.security.auditing.securityauditing.domain.User;
+import com.example.security.auditing.securityauditing.domain.UserDto;
 import com.example.security.auditing.securityauditing.repository.UserRepository;
 import com.example.security.auditing.securityauditing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +24,17 @@ public class UserController {
 
     @GetMapping("/register")
     public String register(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDto());
         return "register";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+    public String register(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             return "register";
         }
         else{
-            userService.save(user);
+            userService.save(userDto);
             return "redirect:/";
         }
     }
