@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="layout">
+<th:block layout:fragment="content">
+<head>
+
+</head>
+<body>
+<div>
+    <a th:href="@{/cats/new}" class="btn btn-primary" type="submit">Create Cats</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Created By</th>
+            <th>Creation Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cat:${cats}" th:object="${cat}">
+            <td th:text="*{Id}"></td>
+            <td th:text="*{Name}"></td>
+            <td th:text="*{createdBy}"></td>
+            <td th:text="*{creationDate}"></td>
+            <td>
+                <form method="post" th:action="@{'/cats/' + ${cat.id} + '/delete'}">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>
