@@ -2,18 +2,20 @@ package com.example.security.auditing.securityauditing.controller.api;
 
 import com.example.security.auditing.securityauditing.domain.Cat;
 import com.example.security.auditing.securityauditing.repository.CatRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * Created on February, 2018
  *
  * @author cylon
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/cats")
 public class CatApiController {
@@ -22,48 +24,40 @@ public class CatApiController {
 	private CatRepository catRepository;
 
 	@GetMapping("")
-	public Iterable<Cat> getCatsList(){
-		return catRepository.findAll();
+	public ResponseEntity<Iterable<Cat>> getCatsList() {
+		return ResponseEntity.ok(catRepository.findAll());
 	}
 
-	@GetMapping("/new")
-	public String getNewCat(Model model){
-		model.addAttribute("cat", new Cat());
-		return "cat/createCat";
-	}
-
-	@PostMapping("/new")
-	public String postNewCat(@ModelAttribute @Valid Cat cat, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			return "cat/createCat";
-		}
+	@PostMapping("")
+	public ResponseEntity<Cat> createNewCat(@Validated @RequestBody Cat cat) {
 		catRepository.save(cat);
-		return "redirect:/cats";
+		return ResponseEntity.ok(cat);
+	}
+
+	@PutMapping("")
+	public ResponseEntity<Cat> updateCat(@Validated @RequestBody Cat cat) {
+		catRepository.save(cat);
+		return ResponseEntity.ok(cat);
 	}
 
 	@GetMapping("/{id}")
-	public String showCatList(@PathVariable Long id, Model model){
-		model.addAttribute("cat", catRepository.findById(id).get());
-		return "cat/showCat";
+	public ResponseEntity<Cat> showCat(@PathVariable Long id) {
+		Optional<Cat> catOptional = catRepository.findById(id);
+
+		if(!catOptional.isPresent()){
+			log.warn("Cat with id: {} is not present");
+			return ResponseEntity.noContent().build();
+		}
+		else {
+			return ResponseEntity.ok(catOptional.get());
+		}
 	}
 
-	@GetMapping("/{id}/update")
-	public String getUpdateCat(@PathVariable Long id, Model model){
-		model.addAttribute("cat", catRepository.findById(id).get());
-		return "cat/updateCat";
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCat(@PathVariable Long id){
+
+		catRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping("/{id}/update")
-	public String postUpdateCat(@ModelAttribute Cat cat){
-		catRepository.save(cat);
-		return "redirect:/cats";
-	}
-
-	@PostMapping("/{id}/delete")
-	public String postCatDelete(@PathVariable Long id){
-
-		Cat cat = catRepository.findById(id).get();
-		catRepository.delete(cat);
-		return "redirect:/cats";
-	}
 }
